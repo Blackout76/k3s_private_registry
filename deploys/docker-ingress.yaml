@@ -12,10 +12,10 @@ spec:
   ingressClassName: traefik
   tls:
   - hosts:
-    - docker.blackout76.tech
+    - __DOMAIN__
     secretName: tls-docker-registry
   rules:
-  - host: docker.blackout76.tech
+  - host: __DOMAIN__
     http:
       paths:
       - path: /
