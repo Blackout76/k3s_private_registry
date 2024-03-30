@@ -11,8 +11,7 @@ metadata:
       - name: StorageType
         value: hostpath
       - name: BasePath
-        value: <path-where-registry-should-be-stored> 
-   # eg value: /home/techiterian/Documents/volumes/docker_registry
+        value: __DOCKER_PVC__
 provisioner: openebs.io/local
 reclaimPolicy: Retain
 volumeBindingMode: WaitForFirstConsumer

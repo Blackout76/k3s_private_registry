@@ -18,13 +18,13 @@ spec:
         component: docker-registry 
     spec:
       volumes:
-        - name: docker-registry-database-volume # Persistant volume claim is used here
+        - name: docker-registry-database-volume
           persistentVolumeClaim:
             claimName: docker-registry-pvc
-        - name: docker-certs-volume # Secret used here to make certificates available wihtin created pod
+        - name: docker-certs-volume
           secret:
             secretName: docker-registry-certs-secret
-        - name: docker-auth-volume # Secret used here to make htpasswd auth available wihtin created pod
+        - name: docker-auth-volume
           secret:
             secretName: docker-registry-auth-secret
       containers:
@@ -39,17 +39,17 @@ spec:
               value: "Registry Realm"
             - name: REGISTRY_AUTH_HTPASSWD_PATH
               value: "/auth/htpasswd"
-            - name: REGISTRY_HTTP_TLS_CERTIFICATE
-              value: "/certs/tls.crt"
-            - name: REGISTRY_HTTP_TLS_KEY
-              value: "/certs/tls.key"
+            # - name: REGISTRY_HTTP_TLS_CERTIFICATE
+            #   value: "/certs/tls.crt"
+            # - name: REGISTRY_HTTP_TLS_KEY
+            #   value: "/certs/tls.key"
           volumeMounts:
-          - mountPath: "/var/lib/registry" # /var/lib/registry is a common location within a pod where all registries will be stored
-            name: docker-registry-database-volume
-          - mountPath: "/certs"
-            name: docker-certs-volume
-          - mountPath: "/auth"
-            name: docker-auth-volume
+          - name: docker-registry-database-volume
+            mountPath: "/var/lib/registry"
+          # - name: docker-certs-volume
+          #   mountPath: "/certs"
+          - name: docker-auth-volume
+            mountPath: "/auth"
 ---
 
 ################################## 
@@ -67,5 +67,5 @@ spec:
   ports:
     - port: 5000
       targetPort: 5000
-      nodePort: 30500
+      nodePort: __DOCKER_PORT__
 ---

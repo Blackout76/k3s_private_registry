@@ -11,7 +11,7 @@ spec:
     # The ACME server URL
     server: https://acme-v02.api.letsencrypt.org/directory
     # Email address used for ACME registration
-    email: olivier.leger.dev@gmail.com
+    email: __MAIL__
     # Name of a secret used to store the ACME account private key
     privateKeySecretRef:
       name: letsencrypt-docker-registry
@@ -31,10 +31,10 @@ metadata:
   namespace: docker-registry
 spec:
   secretName: tls-docker-registry
-  commonName: docker.blackout76.tech
+  commonName: __DOMAIN__
   issuerRef:
     name: letsencrypt-docker-registry
     kind: Issuer
   dnsNames:
-  - docker.blackout76.tech
+  - __DOMAIN__
 ---

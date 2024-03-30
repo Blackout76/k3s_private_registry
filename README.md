@@ -14,4 +14,5 @@ sudo ./install.sh
 
 ## access
 
-Catalog: `https://<your domain>/v2/_catalog/`
+Catalog: got to `https://<your domain>/v2/_catalog/`
+Certificate detail: `sudo kubectl describe -n docker-registry Certificate tls-docker-registry`
