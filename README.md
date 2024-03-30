@@ -10,6 +10,8 @@ cd k3s_private_registry
 chmod +x install.sh
 
 sudo ./install.sh
+
+sudo kubectl apply -f deploys/docker-domain-cert.yaml
 ```
 
 ## access

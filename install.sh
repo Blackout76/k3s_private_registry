@@ -59,7 +59,8 @@ file_contents=$(<deploys/docker-domain-cert.yaml)
 file_contents=${file_contents//__DOMAIN__/$DOMAIN}
 file_contents=${file_contents//__MAIL__/$CERT_MAIL}
 echo "$file_contents" > deploys/docker-domain-cert.yaml
-kubectl apply -f deploys/docker-domain-cert.yaml
+# kubectl apply -f deploys/docker-domain-cert.yaml
+
 
 echo "Deploy docker ingress"
 file_contents=$(<deploys/docker-ingress.yaml)
