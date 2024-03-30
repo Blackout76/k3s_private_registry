@@ -21,7 +21,7 @@ echo "Enter docker registry port:"
 read DOCKER_PORT
 
 echo "Enter docker registry volume path:"
-#DOCKER_PVC="/volumes/docker_registry"
+# DOCKER_PVC="/volumes/docker_registry"
 read DOCKER_PVC
 
 
@@ -50,16 +50,18 @@ echo "${file_contents//__DOCKER_PVC__/$DOCKER_PVC}" > deploys/docker-storage.yam
 kubectl apply -f deploys/docker-storage.yaml
 
 echo "Deploy docker registry"
-file_contents=$(<deploys/docker-storage.yaml)
+file_contents=$(<deploys/docker-registry.yaml)
 echo "${file_contents//__DOCKER_PORT__/$DOCKER_PORT}" > deploys/docker-registry.yaml
-# kubectl apply -f deploys/docker-registry.yaml
+kubectl apply -f deploys/docker-registry.yaml
 
 echo "Deploy docker domain tls"
-file_contents=$(<deploys/docker-storage.yaml)
+file_contents=$(<deploys/docker-domain-cert.yaml)
 file_contents=${file_contents//__DOMAIN__/$DOMAIN}
 file_contents=${file_contents//__MAIL__/$CERT_MAIL}
 echo "$file_contents" > deploys/docker-domain-cert.yaml
 kubectl apply -f deploys/docker-domain-cert.yaml
 
 echo "Deploy docker ingress"
+file_contents=$(<deploys/docker-ingress.yaml)
+echo "${file_contents//__DOCKER_PORT__/$DOCKER_PORT}" > deploys/docker-ingress.yaml
 kubectl apply -f deploys/docker-ingress.yaml

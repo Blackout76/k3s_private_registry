@@ -24,4 +24,4 @@ spec:
           service:
             name: docker-registry-service
             port:
-              number: 30500
+              number: __DOCKER_PORT__
