@@ -1,0 +1,99 @@
+
+
+################################## 
+### Registry
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: docker-registry
+  namespace: docker-registry
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      component: docker-registry
+  template:
+    metadata:
+      labels:
+        component: docker-registry 
+    spec:
+      volumes:
+        - name: docker-registry-database-volume # Persistant volume claim is used here
+          persistentVolumeClaim:
+            claimName: docker-registry-pvc
+        - name: docker-certs-volume # Secret used here to make certificates available wihtin created pod
+          secret:
+            secretName: docker-registry-certs-secret
+        - name: docker-auth-volume # Secret used here to make htpasswd auth available wihtin created pod
+          secret:
+            secretName: docker-registry-auth-secret
+      containers:
+        - name: docker-registry
+          image: registry:latest
+          ports:
+            - containerPort: 5000
+          env:
+            - name: REGISTRY_AUTH
+              value: "htpasswd"
+            - name: REGISTRY_AUTH_HTPASSWD_REALM
+              value: "Registry Realm"
+            - name: REGISTRY_AUTH_HTPASSWD_PATH
+              value: "/auth/htpasswd"
+            - name: REGISTRY_HTTP_TLS_CERTIFICATE
+              value: "/certs/tls.crt"
+            - name: REGISTRY_HTTP_TLS_KEY
+              value: "/certs/tls.key"
+          volumeMounts:
+          - mountPath: "/var/lib/registry" # /var/lib/registry is a common location within a pod where all registries will be stored
+            name: docker-registry-database-volume
+          - mountPath: "/certs"
+            name: docker-certs-volume
+          - mountPath: "/auth"
+            name: docker-auth-volume
+---
+
+################################## 
+### Service
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: docker-registry-service
+  namespace: docker-registry
+spec:
+  type: NodePort
+  selector:
+    component: docker-registry
+  ports:
+    - port: 5000
+      targetPort: 5000
+      nodePort: 30500
+---
+
+
+################################## 
+### Ingress
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: docker-registry-ingress
+  namespace: docker-registry
+  annotations:
+    kubernetes.io/ingress.class: traefik
+spec:
+  ingressClassName: traefik
+  tls:
+  - hosts:
+    - docker.blackout76.tech
+    secretName: tls-docker-registry
+  rules:
+  - host: docker.blackout76.tech
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: docker-registry-service
+            port:
+              number: 30500

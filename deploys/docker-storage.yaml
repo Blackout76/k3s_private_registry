@@ -1,0 +1,33 @@
+
+################################## 
+### Volume pvc
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: docker-registery-sc
+  annotations:
+    openebs.io/cas-type: local
+    cas.openebs.io/config: |
+      - name: StorageType
+        value: hostpath
+      - name: BasePath
+        value: <path-where-registry-should-be-stored> 
+   # eg value: /home/techiterian/Documents/volumes/docker_registry
+provisioner: openebs.io/local
+reclaimPolicy: Retain
+volumeBindingMode: WaitForFirstConsumer
+---
+
+
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: docker-registry-pvc # Specify name for pvc
+  namespace: docker-registry
+spec:
+  storageClassName: docker-registery-sc # Make sure storage class name is correctly spelled
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10G # Specify appropriate storage

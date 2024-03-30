@@ -1,0 +1,40 @@
+
+################################## 
+### Certificate issuer
+apiVersion: cert-manager.io/v1
+kind: Issuer
+metadata:
+  name: letsencrypt-docker-registry
+  namespace: docker-registry
+spec:
+  acme:
+    # The ACME server URL
+    server: https://acme-v02.api.letsencrypt.org/directory
+    # Email address used for ACME registration
+    email: olivier.leger.dev@gmail.com
+    # Name of a secret used to store the ACME account private key
+    privateKeySecretRef:
+      name: letsencrypt-docker-registry
+    # Enable the HTTP-01 challenge provider
+    solvers:
+      - http01:
+          ingress:
+            ingressClassName: traefik
+---
+
+################################## 
+### Certificate
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: tls-docker-registry
+  namespace: docker-registry
+spec:
+  secretName: tls-docker-registry
+  commonName: docker.blackout76.tech
+  issuerRef:
+    name: letsencrypt-docker-registry
+    kind: Issuer
+  dnsNames:
+  - docker.blackout76.tech
+---
