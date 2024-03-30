@@ -17,6 +17,7 @@ spec:
       labels:
         component: docker-registry 
     spec:
+      nodeName: __MASTER_NODENAME__ 
       volumes:
         - name: docker-auth-volume
           secret:
@@ -39,17 +40,17 @@ spec:
               value: "Registry Realm"
             - name: REGISTRY_AUTH_HTPASSWD_PATH
               value: "/auth/htpasswd"
-            - name: REGISTRY_HTTP_TLS_CERTIFICATE
-              value: "/certs/tls.crt"
-            - name: REGISTRY_HTTP_TLS_KEY
-              value: "/certs/tls.key"
+            # - name: REGISTRY_HTTP_TLS_CERTIFICATE
+            #   value: "/certs/tls.crt"
+            # - name: REGISTRY_HTTP_TLS_KEY
+            #   value: "/certs/tls.key"
           volumeMounts:
           - name: docker-auth-volume
             mountPath: "/auth"
           - name: docker-certs-volume
             mountPath: "/certs"
-          # - name: docker-registry-database-volume
-          #   mountPath: "/var/lib/registry"
+          - name: docker-registry-database-volume
+            mountPath: "/var/lib/registry"
 ---
 
 ################################## 

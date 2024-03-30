@@ -1,33 +1,33 @@
 
 ################################## 
 ### Volume pvc
-apiVersion: storage.k8s.io/v1
-kind: StorageClass
-metadata:
-  name: docker-registry-sc
-  annotations:
-    openebs.io/cas-type: local
-    cas.openebs.io/config: |
-      - name: StorageType
-        value: hostpath
-      - name: BasePath
-        value: __DOCKER_PVC__
-provisioner: openebs.io/local
-reclaimPolicy: Retain
-volumeBindingMode: WaitForFirstConsumer
----
 
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: docker-registry-pv
+  namespace: docker-registry
+spec:
+  capacity:
+    storage: 10Gi
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: __DOCKER_PVC__
+---
 
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
-  name: docker-registry-pvc # Specify name for pvc
+  name: docker-registry-pvc
   namespace: docker-registry
 spec:
-  storageClassName: docker-registry-sc # Make sure storage class name is correctly spelled
+  storageClassName: ""
   accessModes:
     - ReadWriteOnce
   resources:
     requests:
-      storage: 10G # Specify appropriate storage
+      storage: 10Gi
+  volumeMode: Filesystem
 ---

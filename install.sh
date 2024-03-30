@@ -1,28 +1,32 @@
 #!/bin/bash
 
 echo "Enter domain name:"
-# DOMAIN=""
-read DOMAIN
+DOMAIN=""
+#read DOMAIN
 
 echo "Enter valid email (domain certs):"
-# CERT_MAIL=""
-read CERT_MAIL
+CERT_MAIL=""
+#read CERT_MAIL
 
 echo "Enter docker username:"
-# DOCKER_LOGIN="docker"
-read LOGIN
+DOCKER_LOGIN="docker"
+#read LOGIN
 
 echo "Enter docker password:"
-# DOCKER_PASSWORD="docker"
-read PASSWORD
+DOCKER_PASSWORD="docker"
+#read PASSWORD
 
 echo "Enter docker registry port:"
-# DOCKER_PORT=30500
-read DOCKER_PORT
+DOCKER_PORT=30500
+#read DOCKER_PORT
 
 echo "Enter docker registry volume path:"
-# DOCKER_PVC="volumes/docker_registry"
-read DOCKER_PVC
+DOCKER_PVC="volumes/docker_registry"
+#read DOCKER_PVC
+
+echo "Enter node name to deploy on:"
+MASTER_NODENAME="aqua-master"
+#read DOCKER_PVC
 
 
 apt-get install apache2-utils -Y
@@ -51,7 +55,9 @@ kubectl apply -f deploys/docker-storage.yaml
 
 echo "Deploy docker registry"
 file_contents=$(<deploys/docker-registry.yaml)
-echo "${file_contents//__DOCKER_PORT__/$DOCKER_PORT}" > deploys/docker-registry.yaml
+file_contents=${file_contents//__MASTER_NODENAME__/$MASTER_NODENAME}
+file_contents=${file_contents//__DOCKER_PORT__/$DOCKER_PORT}
+echo "$file_contents" > deploys/docker-registry.yaml
 kubectl apply -f deploys/docker-registry.yaml
 
 echo "Deploy docker domain tls"
@@ -59,7 +65,7 @@ file_contents=$(<deploys/docker-domain-cert.yaml)
 file_contents=${file_contents//__DOMAIN__/$DOMAIN}
 file_contents=${file_contents//__MAIL__/$CERT_MAIL}
 echo "$file_contents" > deploys/docker-domain-cert.yaml
-kubectl apply -f deploys/docker-domain-cert.yaml
+#kubectl apply -f deploys/docker-domain-cert.yaml
 
 echo "Deploy docker ingress"
 file_contents=$(<deploys/docker-ingress.yaml)
