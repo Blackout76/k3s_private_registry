@@ -4,8 +4,8 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: docker-registry-ingress
-  namespace: docker-registry
+  name: __NAMESPACE__-ingress
+  namespace: __NAMESPACE__
   annotations:
     kubernetes.io/ingress.class: traefik
 spec:
@@ -13,7 +13,7 @@ spec:
   tls:
   - hosts:
     - __DOMAIN__
-    secretName: tls-docker-registry
+    secretName: tls-__NAMESPACE__
   rules:
   - host: __DOMAIN__
     http:
@@ -22,6 +22,6 @@ spec:
         pathType: Prefix
         backend:
           service:
-            name: docker-registry-service
+            name: __NAMESPACE__-service
             port:
               number: __DOCKER_PORT__

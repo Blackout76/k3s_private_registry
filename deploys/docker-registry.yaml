@@ -2,34 +2,49 @@
 
 ################################## 
 ### Registry
+
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: __NAMESPACE__-pvc
+  namespace: __NAMESPACE__
+spec:
+  storageClassName: ""
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: __STORAGE_SPACE__Gi
+---
+
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: docker-registry
-  namespace: docker-registry
+  name: __NAMESPACE__
+  namespace: __NAMESPACE__
 spec:
   replicas: 1
   selector:
     matchLabels:
-      component: docker-registry
+      component: __NAMESPACE__
   template:
     metadata:
       labels:
-        component: docker-registry 
+        component: __NAMESPACE__ 
     spec:
       nodeName: __MASTER_NODENAME__ 
       volumes:
         - name: docker-auth-volume
           secret:
-            secretName: docker-registry-auth-secret
+            secretName: __NAMESPACE__-auth-secret
         - name: docker-certs-volume
           secret:
-            secretName: docker-registry-certs-secret
-        - name: docker-registry-database-volume
+            secretName: __NAMESPACE__-certs-secret
+        - name: __NAMESPACE__-database-volume
           persistentVolumeClaim:
-            claimName: docker-registry-pvc
+            claimName: __NAMESPACE__-pvc
       containers:
-        - name: docker-registry
+        - name: __NAMESPACE__
           image: registry:latest
           ports:
             - containerPort: 5000
@@ -49,7 +64,7 @@ spec:
             mountPath: "/auth"
           - name: docker-certs-volume
             mountPath: "/certs"
-          - name: docker-registry-database-volume
+          - name: __NAMESPACE__-database-volume
             mountPath: "/var/lib/registry"
 ---
 
@@ -59,12 +74,12 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: docker-registry-service
-  namespace: docker-registry
+  name: __NAMESPACE__-service
+  namespace: __NAMESPACE__
 spec:
   type: NodePort
   selector:
-    component: docker-registry
+    component: __NAMESPACE__
   ports:
     - port: 5000
       targetPort: 5000
