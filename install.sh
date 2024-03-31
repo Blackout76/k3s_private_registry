@@ -36,7 +36,7 @@ echo "Generating auth secret"
 kubectl create secret generic docker-registry-auth-secret --from-file=registry/auth/htpasswd --namespace docker-registry
 
 echo "Deploy storage"
-mkdir "/volumes/$STORAGE_NAME"
+mkdir -p "/volumes/$STORAGE_NAME"
 chmod -R 777 "/volumes/$STORAGE_NAME"
 
 MANIFEST="temp.yaml"
