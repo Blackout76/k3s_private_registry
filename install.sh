@@ -50,9 +50,10 @@ spec:
     storage: "${STORAGE_SPACE}Gi"
   volumeMode: Filesystem
   accessModes:
-    - ReadWriteMany
+    - ReadWriteOnce
   hostPath:
     path: "/volumes/$STORAGE_NAME"
+  persistentVolumeReclaimPolicy: Delete
 EOF
 kubectl apply -f temp.yaml
 rm temp.yaml
@@ -71,7 +72,6 @@ spec:
   resources:
     requests:
       storage: "${STORAGE_SPACE}Gi"
-  persistentVolumeReclaimPolicy: Delete
 EOF
 kubectl apply -f temp.yaml
 rm temp.yaml
