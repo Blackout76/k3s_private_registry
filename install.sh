@@ -57,6 +57,26 @@ EOF
 kubectl apply -f temp.yaml
 rm temp.yaml
 
+MANIFEST="temp.yaml"
+cat << EOF >> "$MANIFEST"
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: "${NAMESPACE}-pvc"
+  namespace: $NAMESPACE
+spec:
+  storageClassName: ""
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: "${STORAGE_SPACE}Gi"
+  persistentVolumeReclaimPolicy: Delete
+EOF
+kubectl apply -f temp.yaml
+rm temp.yaml
+
+
 echo "Deploy docker registry"
 file_contents=$(<deploys/docker-registry.yaml)
 file_contents=${file_contents//__NAMESPACE__/$NAMESPACE}

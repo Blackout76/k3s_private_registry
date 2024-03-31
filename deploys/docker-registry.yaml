@@ -3,20 +3,6 @@
 ################################## 
 ### Registry
 
-kind: PersistentVolumeClaim
-apiVersion: v1
-metadata:
-  name: __NAMESPACE__-pvc
-  namespace: __NAMESPACE__
-spec:
-  storageClassName: ""
-  accessModes:
-    - ReadWriteOnce
-  resources:
-    requests:
-      storage: __STORAGE_SPACE__Gi
----
-
 apiVersion: apps/v1
 kind: Deployment
 metadata:
