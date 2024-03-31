@@ -47,7 +47,7 @@ metadata:
   name: "$STORAGE_NAME-pv"
 spec:
   capacity:
-    storage: "$STORAGE_SPACE"Gi
+    storage: "${STORAGE_SPACE}Gi"
   volumeMode: Filesystem
   accessModes:
     - ReadWriteMany
