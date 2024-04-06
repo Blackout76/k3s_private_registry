@@ -1,8 +1,4 @@
 
-
-################################## 
-### Registry
-
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -71,3 +67,27 @@ spec:
       targetPort: 5000
       nodePort: __DOCKER_PORT__
 ---
+
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: __NAMESPACE__-ingress
+  namespace: __NAMESPACE__
+spec:
+  ingressClassName: traefik
+  tls:
+  - hosts:
+    - __DOMAIN__
+    secretName: tls-__NAMESPACE__
+  rules:
+  - host: __DOMAIN__
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: __NAMESPACE__-service
+            port:
+              number: __DOCKER_PORT__
+

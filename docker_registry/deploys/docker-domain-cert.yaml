@@ -4,22 +4,22 @@
 apiVersion: cert-manager.io/v1
 kind: Issuer
 metadata:
-  name: letsencrypt-__NAMESPACE__
+  name: letsencrypt-__NAMESPACE__-issuer
   namespace: __NAMESPACE__
 spec:
   acme:
     # The ACME server URL
-    server: https://acme-v02.api.letsencrypt.org/directory
+    server: https://acme-staging-v02.api.letsencrypt.org/directory
     # Email address used for ACME registration
     email: __MAIL__
     # Name of a secret used to store the ACME account private key
     privateKeySecretRef:
-      name: letsencrypt-__NAMESPACE__
+      name: letsencrypt-__NAMESPACE__-acme
     # Enable the HTTP-01 challenge provider
     solvers:
       - http01:
           ingress:
-            ingressClassName: traefik
+            ingressClassName: nginx
 ---
 
 ################################## 
@@ -27,13 +27,13 @@ spec:
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
-  name: tls-__NAMESPACE__
+  name: cert-__NAMESPACE__
   namespace: __NAMESPACE__
 spec:
   secretName: tls-__NAMESPACE__
   commonName: __DOMAIN__
   issuerRef:
-    name: letsencrypt-__NAMESPACE__
+    name: letsencrypt-__NAMESPACE__-issuer
     kind: Issuer
   dnsNames:
   - __DOMAIN__
