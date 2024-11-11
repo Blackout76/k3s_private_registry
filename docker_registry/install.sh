@@ -83,6 +83,7 @@ file_contents=${file_contents//__NAMESPACE__/$NAMESPACE}
 file_contents=${file_contents//__MASTER_NODENAME__/$MASTER_NODENAME}
 file_contents=${file_contents//__DOCKER_PORT__/$DOCKER_PORT}
 file_contents=${file_contents//__STORAGE_SPACE__/$STORAGE_SPACE}
+file_contents=${file_contents//__DOMAIN__/$DOMAIN}
 echo "$file_contents" > deploys/docker-registry.yaml
 kubectl apply -f deploys/docker-registry.yaml
 
@@ -94,10 +95,10 @@ file_contents=${file_contents//__MAIL__/$CERT_MAIL}
 echo "$file_contents" > deploys/docker-domain-cert.yaml
 #kubectl apply -f deploys/docker-domain-cert.yaml
 
-echo "Deploy docker ingress"
-file_contents=$(<deploys/docker-ingress.yaml)
-file_contents=${file_contents//__NAMESPACE__/$NAMESPACE}
-file_contents=${file_contents//__DOCKER_PORT__/$DOCKER_PORT}
-file_contents=${file_contents//__DOMAIN__/$DOMAIN}
-echo "$file_contents" > deploys/docker-ingress.yaml
-kubectl apply -f deploys/docker-ingress.yaml
+# echo "Deploy docker ingress"
+# file_contents=$(<deploys/docker-ingress.yaml)
+# file_contents=${file_contents//__NAMESPACE__/$NAMESPACE}
+# file_contents=${file_contents//__DOCKER_PORT__/$DOCKER_PORT}
+# file_contents=${file_contents//__DOMAIN__/$DOMAIN}
+# echo "$file_contents" > deploys/docker-ingress.yaml
+# kubectl apply -f deploys/docker-ingress.yaml
