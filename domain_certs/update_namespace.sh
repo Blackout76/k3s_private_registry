@@ -1,13 +1,11 @@
-
 echo "Enter the namespace:"
 read NAMESPACE
 
 echo "Enter sub/domains: (abc.com,def.ghi.net, ...)"
 read DOMAINS
 
-
-MAIN_DOMAIN=
-DOMAINS=
+# NAMESPACE=""
+# DOMAINS=""
 
 echo "#####> Update tls certs on: $NAMESPACE "
 
@@ -17,17 +15,17 @@ apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
   name: "tls-$NAMESPACE"
-  namespace: $NAMESPACE
+  namespace: "$NAMESPACE"
 spec:
   secretName: "tls-$NAMESPACE"
-  commonName: $DOMAIN
+  commonName: "$DOMAIN"
   issuerRef:
-    name: "letsencrypt-${NAMESPACE}"
+    name: "letsencrypt-$NAMESPACE"
     kind: Issuer
   dnsNames:
-  - $DOMAIN
+  - "$DOMAIN"
 EOF
 kubectl apply -f temp.yaml
 rm temp.yaml
 
-echo "U can check the status of new certificate with: sudo kubectl describe -n {$NAMESPACE} Certificate tls-{$NAMESPACE}"
+echo "U can check the status of new certificate with: sudo kubectl describe -n $NAMESPACE Certificate tls-$NAMESPACE"
