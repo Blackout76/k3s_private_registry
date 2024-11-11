@@ -20,12 +20,12 @@ metadata:
   namespace: $NAMESPACE
 spec:
   secretName: "tls-$NAMESPACE"
-  commonName: __DOMAIN__
+  commonName: $DOMAIN
   issuerRef:
     name: "letsencrypt-${NAMESPACE}"
     kind: Issuer
   dnsNames:
-  - __DOMAIN__
+  - $DOMAIN
 EOF
 kubectl apply -f temp.yaml
 rm temp.yaml
