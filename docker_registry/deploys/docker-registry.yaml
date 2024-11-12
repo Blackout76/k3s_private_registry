@@ -29,7 +29,7 @@ spec:
         - name: __NAMESPACE__
           image: registry:latest
           ports:
-            - containerPort: 5000
+            - containerPort: __INGRESS_PORT__
           env:
             - name: REGISTRY_AUTH
               value: "htpasswd"
