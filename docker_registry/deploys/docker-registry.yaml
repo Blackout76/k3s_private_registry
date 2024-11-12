@@ -63,8 +63,8 @@ spec:
   selector:
     component: __NAMESPACE__
   ports:
-    - port: 5000
-      targetPort: 5000
+    - port: __INGRESS_PORT__
+      targetPort: __INGRESS_PORT__
       nodePort: __DOCKER_PORT__
 ---
 
@@ -89,5 +89,5 @@ spec:
           service:
             name: __NAMESPACE__-service
             port:
-              number: __DOCKER_PORT__
+              number: __INGRESS_PORT__
 
