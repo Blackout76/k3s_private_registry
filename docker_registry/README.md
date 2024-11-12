@@ -17,7 +17,6 @@ chmod +x install.sh
 
 - Install: `sudo ./install.sh`
 
-- Get tls certs: `sudo kubectl apply -f deploys/docker-domain-cert.yaml`
 
 - Then u must ceclare this private docker registry in your cluster with:
     - name
@@ -32,3 +31,4 @@ chmod +x install.sh
 
 Get catalog: got to `https://<your domain>/v2/_catalog/`
 Check certificate detail: `sudo kubectl describe -n docker-registry Certificate tls-docker-registry`
+Update https tls: `sudo kubectl apply -f deploys/docker-domain-cert.yaml`
