@@ -31,4 +31,4 @@ chmod +x install.sh
 
 Get catalog: got to `https://<your domain>/v2/_catalog/`
 Check certificate detail: `sudo kubectl describe -n docker-registry Certificate tls-docker-registry`
-Update https tls: `sudo kubectl apply -f deploys/docker-domain-cert.yaml`
+Update https tls: `sudo kubectl apply -f domain-certs/update_namespace.sh`
