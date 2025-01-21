@@ -20,7 +20,7 @@ spec:
   secretName: "tls-$NAMESPACE"
   commonName: "$DOMAIN"
   issuerRef:
-    name: "letsencrypt-$NAMESPACE"
+    name: "letsencrypt-$NAMESPACE-issuer"
     kind: Issuer
   dnsNames:
   - "$DOMAIN"
