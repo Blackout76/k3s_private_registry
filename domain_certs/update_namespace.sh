@@ -2,10 +2,10 @@ echo "Enter the namespace:"
 read NAMESPACE
 
 echo "Enter sub/domains: (abc.com,def.ghi.net, ...)"
-read DOMAINS
+read DOMAIN
 
 # NAMESPACE=""
-# DOMAINS=""
+# DOMAIN=""
 
 echo "#####> Update tls certs on: $NAMESPACE "
 
