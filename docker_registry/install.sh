@@ -8,6 +8,7 @@ CERT_MAIL="olivier.leger.dev@gmail.com" # must be a valid email
 DOCKER_LOGIN="docker"
 DOCKER_PASSWORD="docker"
 DOCKER_PORT=30500 # unused port in your cluster
+INGRESS_PORT=5000
 MASTER_NODENAME="aqua-master" # must be same as current node where u install docker registry
 STORAGE_NAME="$NAMESPACE"
 STORAGE_SPACE="10" # Giga space
@@ -82,16 +83,16 @@ file_contents=$(<deploys/docker-registry.yaml)
 file_contents=${file_contents//__NAMESPACE__/$NAMESPACE}
 file_contents=${file_contents//__MASTER_NODENAME__/$MASTER_NODENAME}
 file_contents=${file_contents//__DOCKER_PORT__/$DOCKER_PORT}
+file_contents=${file_contents//__INGRESS_PORT__/$INGRESS_PORT}
 file_contents=${file_contents//__STORAGE_SPACE__/$STORAGE_SPACE}
 file_contents=${file_contents//__DOMAIN__/$DOMAIN}
 echo "$file_contents" > deploys/docker-registry.yaml
 kubectl apply -f deploys/docker-registry.yaml
 
-
-# echo "Deploy docker domain tls"
-# file_contents=$(<deploys/docker-domain-cert.yaml)
-# file_contents=${file_contents//__NAMESPACE__/$NAMESPACE}
-# file_contents=${file_contents//__DOMAIN__/$DOMAIN}
-# file_contents=${file_contents//__MAIL__/$CERT_MAIL}
-# echo "$file_contents" > deploys/docker-domain-cert.yaml
-# #kubectl apply -f deploys/docker-domain-cert.yaml
+echo "Deploy docker domain tls"
+file_contents=$(<deploys/docker-domain-cert.yaml)
+file_contents=${file_contents//__NAMESPACE__/$NAMESPACE}
+file_contents=${file_contents//__DOMAIN__/$DOMAIN}
+file_contents=${file_contents//__MAIL__/$CERT_MAIL}
+echo "$file_contents" > deploys/docker-domain-cert.yaml
+kubectl apply -f deploys/docker-domain-cert.yaml

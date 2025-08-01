@@ -1,5 +1,4 @@
-
-################################## 
+##################################
 ### Certificate issuer
 apiVersion: cert-manager.io/v1
 kind: Issuer
@@ -20,16 +19,15 @@ spec:
       - selector: {}
         http01:
           ingress:
-            ingressClassName: traefik
-
+            ingressClassName: nginx
 ---
 
-################################## 
+##################################
 ### Certificate
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
-  name: cert-__NAMESPACE__
+  name: tls-__NAMESPACE__
   namespace: __NAMESPACE__
 spec:
   secretName: tls-__NAMESPACE__
