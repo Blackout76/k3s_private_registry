@@ -22,7 +22,7 @@ spec:
   secretName: "tls-$NAMESPACE"
   commonName: __DOMAIN__
   issuerRef:
-    name: "letsencrypt-${NAMESPACE}"
+    name: "letsencrypt-${NAMESPACE}-production"
     kind: Issuer
   dnsNames:
   - __DOMAIN__
